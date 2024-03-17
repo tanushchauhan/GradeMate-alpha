@@ -74,21 +74,59 @@ function Maincomponent() {
     useContext(globalContext);
 
   useEffect(() => {
-    if (!hasCookie("token")) {
-      router.push("/signin");
-    } else if (!sessionStorage.getItem("data")) {
-      deleteCookie("token");
-      router.push("/signin");
-    } else {
-      if (!loading) return;
-      let initialData = {};
-      let initialPeriod;
-      initialData = JSON.parse(sessionStorage.getItem(`data`));
-      initialPeriod = sessionStorage.getItem("currPeriod");
-      setCurrentData(initialData[initialPeriod]);
-      setLoading(false);
+    async function runThis() {
+      if (!hasCookie("token")) {
+        router.push("/signin");
+      } else if (!sessionStorage.getItem("data")) {
+        const options = { onlyPeriod: false, periodNumNeeded: null };
+        const token = getCookie("token");
+        const dataToSend = { token, options };
+        const res = await fetch("/api/hac/courses", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dataToSend),
+        });
+
+        try {
+          let data = await res.json();
+          if (!data.success) {
+            deleteCookie("token");
+            router.push("/signin");
+            return;
+          } else {
+            const perNum = data.periodNumber;
+            const dataToStore = {};
+            dataToStore[`${perNum}`] = data;
+            sessionStorage.setItem(`data`, JSON.stringify(dataToStore));
+            sessionStorage.setItem("currPeriod", perNum);
+            sessionStorage.setItem("perCurrPeriod", perNum);
+            updateChangeTheHeader(true);
+            let initialData = {};
+            let initialPeriod;
+            initialData = JSON.parse(sessionStorage.getItem(`data`));
+            initialPeriod = sessionStorage.getItem("currPeriod");
+            setCurrentData(initialData[initialPeriod]);
+            setLoading(false);
+            return;
+          }
+        } catch (e) {
+          console.error(e);
+          deleteCookie("token");
+          router.push("/signin");
+          return;
+        }
+      } else {
+        if (!loading) return;
+        let initialData = {};
+        let initialPeriod;
+        initialData = JSON.parse(sessionStorage.getItem(`data`));
+        initialPeriod = sessionStorage.getItem("currPeriod");
+        setCurrentData(initialData[initialPeriod]);
+        setLoading(false);
+      }
     }
-  }, [router, loading]);
+    runThis();
+  }, [router, loading, updateChangeTheHeader]);
 
   async function handleChange(e) {
     if (e.target.value === currentData.periodNumber) return;

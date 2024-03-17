@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { hasCookie, setCookie } from "cookies-next";
 import { encCreds } from "../actions.js/encCreds";
 import { useMutation } from "@tanstack/react-query";
-import Loader from "@/components/ui/Loader";
 import { globalContext } from "../providers";
 
 function Form() {
