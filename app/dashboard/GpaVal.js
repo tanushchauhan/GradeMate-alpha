@@ -52,7 +52,7 @@ function getGPA() {
   if (typeof window !== "undefined") {
     transData = JSON.parse(sessionStorage.getItem("trans"));
     currData = JSON.parse(sessionStorage.getItem("data"));
-    currPer = JSON.parse(sessionStorage.getItem("currPeriod"));
+    currPer = JSON.parse(sessionStorage.getItem("perCurrPeriod"));
   }
 
   let sumNumGPA = 0;

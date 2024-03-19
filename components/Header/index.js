@@ -51,7 +51,7 @@ const Header = () => {
   return (
     <>
       <header
-        className={`header left-0 top-0 z-40 flex w-full items-center ${
+        className={`header left-0 top-0 z-[15] flex w-full items-center ${
           sticky
             ? "fixed z-[9999] bg-white !bg-opacity-80 shadow-sticky backdrop-blur-sm transition dark:bg-gray-dark dark:shadow-sticky-dark"
             : "absolute bg-transparent"
@@ -176,19 +176,11 @@ const Header = () => {
               <div className="flex items-center justify-end pr-16 lg:pr-0">
                 <Link
                   href="/signin"
-                  className={`hidden px-7 py-3 text-base font-medium text-dark hover:opacity-70 dark:text-white ${
-                    !changeTheHeader ? "md:block" : ""
-                  }`}
-                >
-                  Sign In
-                </Link>
-                <Link
-                  href="/signup"
                   className={`ease-in-up hidden rounded-sm bg-primary px-8 py-3 text-base font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 hover:shadow-btn-hover ${
                     !changeTheHeader ? "md:block" : ""
                   } md:px-9 lg:px-6 xl:px-9`}
                 >
-                  Sign Up
+                  Sign In
                 </Link>
                 <Link
                   href="/dashboard"

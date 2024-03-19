@@ -14,19 +14,29 @@ import "react-circular-progressbar/dist/styles.css";
 function AssignmentItem({ data, updateModalStatus, id }) {
   return (
     <div
-      className="grid grid-cols-1 items-center justify-items-center sm:justify-items-start sm:grid-cols-[25%_1fr_1fr] p-4 gap-y-4 cursor-pointer font-bold rounded-xl text-slate-800 dark:text-slate-200"
+      className="grid grid-cols-1 items-center justify-items-center sm:justify-items-start sm:grid-cols-[25%_1fr_1fr] p-4 gap-y-4 cursor-pointer font-bold rounded-xl text-slate-800 dark:text-slate-200 border-4"
       style={{
-        backgroundColor: `${
+        borderColor: `${
           data[3] === "Progress Check for Learning"
-            ? "rgb(22 163 74 / 0.6)"
-            : "rgb(220 38 38 / 0.6)"
+            ? "rgb(219 39 119)"
+            : "rgb(79 70 229)"
         }`,
       }}
       onClick={() => updateModalStatus(true, id)}
     >
       <span className="lg:text-xl">{data[0]}</span>
       <span className="text-center lg:text-xl">{data[2]}</span>
-      <span className="sm:justify-self-end text-3xl sm:text-xl">
+      <span
+        className={`sm:justify-self-end text-3xl sm:text-xl p-2 rounded-xl ${
+          Number(data[4])
+            ? Number(data[4]) >= 90
+              ? "bg-green-700"
+              : Number(data[4]) >= 70
+              ? "bg-amber-600"
+              : "bg-red-700"
+            : ""
+        }`}
+      >
         {Number(data[4]) ? Number(data[4]) : data[4]} / {Number(data[5])}
       </span>
     </div>
@@ -80,8 +90,12 @@ function Page({ params }) {
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none m-2 text-slate-200">
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
+              <div
+                className="backdrop-blur-sm fixed inset-0 z-40"
+                onClick={() => updateModalStatus(false)}
+              ></div>
               {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gray-700 outline-none focus:outline-none">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gray-700 outline-none focus:outline-none z-[55]">
                 {/*header*/}
                 <div className="flex items-center justify-between p-5  rounded-t">
                   <h3 className="text-3xl font-semibold">Assignemnt Details</h3>
@@ -160,7 +174,6 @@ function Page({ params }) {
               </div>
             </div>
           </div>
-          <div className="backdrop-blur-sm fixed inset-0 z-40"></div>
         </>
       ) : null}
       <section className="relative z-10 overflow-hidden pt-28 lg:pt-[150px]">
@@ -311,18 +324,18 @@ function Page({ params }) {
             </div>
           </CircularProgressbarWithChildren>
           <div className="flex flex-col items-center justify-center">
-            <h2 className="text-4xl">{data?.courseName}</h2>
+            <h2 className="text-4xl text-center">{data?.courseName}</h2>
             <h3 className="text-3xl mt-5 text-slate-500">Period: {perNum}</h3>
             <div className="grid grid-rows-2 items-start justify-items-start">
               <div className="flex gap-2 items-center justify-center mt-5">
-                <div className="inline-block w-8 h-8 bg-red-600/60"></div>
+                <div className="inline-block w-8 h-8 border-indigo-600/60 border-4"></div>
                 <span className="text-md dark:text-slate-300 text-slate-600">
                   {" "}
                   - Assessment of Learning
                 </span>
               </div>
               <div className="flex gap-2 items-center justify-center mt-5">
-                <div className="inline-block w-8 h-8 bg-green-600/60"></div>
+                <div className="inline-block w-8 h-8 border-pink-600/60 border-4"></div>
                 <span className="text-md dark:text-slate-300 text-slate-600">
                   {" "}
                   - Progress Check for Learning

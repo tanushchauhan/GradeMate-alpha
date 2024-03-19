@@ -8,6 +8,7 @@ import { deleteCookie, getCookie, hasCookie } from "cookies-next";
 import GpaVal from "./GpaVal";
 import { useQueryClient } from "@tanstack/react-query";
 import { globalContext } from "../providers";
+import toast from "react-hot-toast";
 
 function GradeCard({ data, periodNumber }) {
   const router = useRouter();
@@ -20,7 +21,9 @@ function GradeCard({ data, periodNumber }) {
     >
       <div className="grid grid-cols-1 lg:grid-cols-4 lg:gap-y-0 gap-y-5 item-center justify-items-center">
         <div className="flex items-center justify-self-center lg:justify-items-start">
-          <h2 className="font-bold text-2xl ml-3">{data.courseName}</h2>
+          <h2 className="font-bold text-2xl ml-3 text-center">
+            {data.courseName}
+          </h2>
         </div>
         <div className="flex items-center">
           <h2 className="font-bold text-2xl ml-3 text-slate-500">
@@ -46,10 +49,51 @@ function GradeCard({ data, periodNumber }) {
   );
 }
 
+const loadingSVG = (
+  <svg
+    className="animate-spin -ml-1 mr-3 h-10 w-10 text-indigo-400"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <circle
+      className="opacity-25"
+      cx="12"
+      cy="12"
+      r="10"
+      stroke="currentColor"
+      strokeWidth="4"
+    ></circle>
+    <path
+      className="opacity-75"
+      fill="currentColor"
+      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+    ></path>
+  </svg>
+);
+
+const reloadIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="w-10 h-10 stroke-indigo-400"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
+    />
+  </svg>
+);
+
 function Maincomponent() {
   const router = useRouter();
   const periodNumSelector = useRef();
   const [isLoading, setIsLoading] = useState(false);
+  const [mainReloadBtn, setMainReloadBtn] = useState(false);
 
   const initialVal =
     typeof window !== "undefined"
@@ -107,6 +151,19 @@ function Maincomponent() {
             initialPeriod = sessionStorage.getItem("currPeriod");
             setCurrentData(initialData[initialPeriod]);
             setLoading(false);
+            if (data.studentName === "Demo User") {
+              toast(
+                "You are using the Demo Account!\nGrades would be same accross marking periods.",
+                {
+                  icon: "😀",
+                  style: {
+                    borderRadius: "10px",
+                    background: "#333",
+                    color: "#fff",
+                  },
+                }
+              );
+            }
             return;
           }
         } catch (e) {
@@ -127,6 +184,50 @@ function Maincomponent() {
     }
     runThis();
   }, [router, loading, updateChangeTheHeader]);
+
+  async function mainRefetch() {
+    if (mainReloadBtn) return;
+    if (!isLoading) setIsLoading(true);
+    const options = { onlyPeriod: false, periodNumNeeded: null };
+    const token = getCookie("token");
+    const dataToSend = { token, options };
+    const res = await fetch("/api/hac/courses", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dataToSend),
+    });
+
+    try {
+      let data = await res.json();
+      if (!data.success) {
+        deleteCookie("token");
+        console.error("API server down!");
+        router.push("/signin");
+        return;
+      } else {
+        const perNum = data.periodNumber;
+        const dataToStore = {};
+        dataToStore[`${perNum}`] = data;
+        sessionStorage.setItem(`data`, JSON.stringify(dataToStore));
+        sessionStorage.setItem("currPeriod", perNum);
+        sessionStorage.setItem("perCurrPeriod", perNum);
+        updateChangeTheHeader(true);
+        let initialData = {};
+        let initialPeriod;
+        initialData = JSON.parse(sessionStorage.getItem(`data`));
+        initialPeriod = sessionStorage.getItem("currPeriod");
+        setCurrentData(initialData[initialPeriod]);
+        setIsLoading(false);
+        setMainReloadBtn(false);
+        return;
+      }
+    } catch (e) {
+      console.error(e);
+      deleteCookie("token");
+      router.push("/signin");
+      return;
+    }
+  }
 
   async function handleChange(e) {
     if (e.target.value === currentData.periodNumber) return;
@@ -331,21 +432,33 @@ function Maincomponent() {
           </div>
         </section>
         <div className="container mb-10">
-          <div className="mb-10 lg:mt-0 mt-10">
-            <span className="text-xl font-semibold">Marking Period: </span>
-            <select
-              className=" bg-slate-100 dark:bg-slate-700 px-8 py-1 text-lg rounded-lg"
-              ref={periodNumSelector}
-              onChange={handleChange}
-              value={currentData?.periodNumber}
-            >
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-            </select>
-            <div className="mt-3 text-xl text-slate-400">
-              Click each subject for more info
+          <div className="mb-10 lg:mt-0 mt-10 flex items-start justify-center flex-col gap-8 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
+            <div>
+              <span className="text-xl font-semibold">Marking Period: </span>
+              <select
+                className=" bg-slate-100 dark:bg-slate-700 px-8 py-1 text-lg rounded-lg"
+                ref={periodNumSelector}
+                onChange={handleChange}
+                value={currentData?.periodNumber}
+              >
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+              <div className="mt-3 text-xl text-slate-400">
+                Click each subject for more info
+              </div>
+            </div>
+            <div>
+              <button
+                onClick={() => {
+                  setMainReloadBtn(true);
+                  mainRefetch();
+                }}
+              >
+                {mainReloadBtn ? loadingSVG : reloadIcon}
+              </button>
             </div>
           </div>
           <div className="grid grid-col-1 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-1 lg:gap-x-0 gap-y-6">
@@ -362,22 +475,7 @@ function Maincomponent() {
             <h2 className="text-2xl mt-2 text-slate-400">Predicted Weighted</h2>
             <GpaVal setCurrentData={setCurrentData} />
             <button className="block" onClick={handleRefetchClick}>
-              {
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-10 h-10 stroke-indigo-400"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
-                  />
-                </svg>
-              }
+              {reloadIcon}
             </button>
           </div>
         </div>

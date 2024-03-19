@@ -1,5 +1,9 @@
+import Link from "next/link";
+
 const SingleFeature = ({ feature }) => {
   const { icon, title, paragraph } = feature;
+  let linkData;
+  if (feature.linkData) linkData = feature.linkData;
   return (
     <div className="w-full">
       <div className="wow fadeInUp" data-wow-delay=".15s">
@@ -11,6 +15,13 @@ const SingleFeature = ({ feature }) => {
         </h3>
         <p className="pr-[10px] text-base font-medium leading-relaxed text-body-color">
           {paragraph}
+          {linkData ? (
+            <Link href={linkData.link} className="underline text-blue-500">
+              {linkData.text}
+            </Link>
+          ) : (
+            ""
+          )}
         </p>
       </div>
     </div>
