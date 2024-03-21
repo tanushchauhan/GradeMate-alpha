@@ -27,13 +27,12 @@ export function Providers({ children }) {
       })
   );
 
-  let persister;
+  let persister = null;
 
-  if (typeof window !== undefined) {
+  if (typeof window !== "undefined")
     persister = createSyncStoragePersister({
       storage: window.sessionStorage,
     });
-  }
 
   const [gpaTimeChanged, setGpaTimeChanged] = useState(0);
   const [changeTheHeader, setChangeTheHeader] = useState(false);
