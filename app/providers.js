@@ -1,10 +1,12 @@
 "use client";
 
 import { ThemeProvider } from "next-themes";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import { createContext, useState } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
+import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 
 export const globalContext = createContext({
   gpaTimeChanged: null,
@@ -14,7 +16,24 @@ export const globalContext = createContext({
 });
 
 export function Providers({ children }) {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            cacheTime: 1000 * 60 * 60 * 24, // 24 hours
+          },
+        },
+      })
+  );
+
+  let persister;
+
+  if (typeof window !== undefined) {
+    persister = createSyncStoragePersister({
+      storage: window.sessionStorage,
+    });
+  }
 
   const [gpaTimeChanged, setGpaTimeChanged] = useState(0);
   const [changeTheHeader, setChangeTheHeader] = useState(false);
@@ -24,6 +43,7 @@ export function Providers({ children }) {
   function updateChangeTheHeader(newVal) {
     setChangeTheHeader(newVal);
   }
+
   return (
     <globalContext.Provider
       value={{
@@ -34,11 +54,14 @@ export function Providers({ children }) {
       }}
     >
       <ThemeProvider attribute="class" enableSystem={false} defaultTheme="dark">
-        <QueryClientProvider client={queryClient}>
+        <PersistQueryClientProvider
+          client={queryClient}
+          persistOptions={{ persister }}
+        >
           {children}
           <ReactQueryDevtools initialIsOpen={false} />
           <Toaster />
-        </QueryClientProvider>
+        </PersistQueryClientProvider>
       </ThemeProvider>
     </globalContext.Provider>
   );

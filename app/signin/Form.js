@@ -6,6 +6,7 @@ import { hasCookie, setCookie } from "cookies-next";
 import { encCreds } from "../actions.js/encCreds";
 import { useMutation } from "@tanstack/react-query";
 import { globalContext } from "../providers";
+import toast from "react-hot-toast";
 
 function Form() {
   const [error, setError] = useState(null);
@@ -42,7 +43,6 @@ function Form() {
         ></path>
       </svg>
     );
-
     const preToken = username + " % " + password;
     const token = await encCreds(preToken);
     const dataToSend = { token, options };
@@ -83,6 +83,7 @@ function Form() {
         if (typeof window !== "undefined" && window.sessionStorage) {
           const perNum = data.periodNumber;
           const dataToStore = {};
+          data.id = username;
           dataToStore[`${perNum}`] = data;
           sessionStorage.setItem(`data`, JSON.stringify(dataToStore));
           sessionStorage.setItem("currPeriod", perNum);
@@ -91,6 +92,19 @@ function Form() {
         setBtnText("Sign in");
         updateChangeTheHeader(true);
         router.push("/dashboard");
+        if (data.studentName === "Demo User") {
+          toast(
+            "You are using the Demo Account!\nGrades would be same accross marking periods.",
+            {
+              icon: "😀",
+              style: {
+                borderRadius: "10px",
+                background: "#333",
+                color: "#fff",
+              },
+            }
+          );
+        }
         return;
       }
     } catch (e) {

@@ -1,10 +1,14 @@
 "use client";
 
 import { globalContext } from "@/app/providers";
+import ThemeToggler from "@/components/Header/ThemeToggler";
 import { deleteCookie } from "cookies-next";
+import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useContext, useState } from "react";
+import { motion } from "framer-motion";
+
+import { usePathname, useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
 import {
   CircularProgressbarWithChildren,
   buildStyles,
@@ -18,7 +22,7 @@ function AssignmentItem({ data, updateModalStatus, id }) {
       style={{
         borderColor: `${
           data[3] === "Progress Check for Learning"
-            ? "rgb(219 39 119)"
+            ? "rgb(8 145 178 / var(--tw-bg-opacity)"
             : "rgb(79 70 229)"
         }`,
       }}
@@ -43,7 +47,7 @@ function AssignmentItem({ data, updateModalStatus, id }) {
   );
 }
 
-function Page({ params }) {
+function Com({ params }) {
   const { updateChangeTheHeader } = useContext(globalContext);
 
   let store =
@@ -61,21 +65,14 @@ function Page({ params }) {
 
   const router = useRouter();
 
-  const handleClick = () => {
-    deleteCookie("token");
-    if (typeof window !== "undefined") {
-      sessionStorage.removeItem(`data`);
-      sessionStorage.removeItem("currPeriod");
-      sessionStorage.removeItem("currGPADataShown");
-      sessionStorage.removeItem("trans");
-      sessionStorage.removeItem("perCurrPeriod");
-    }
-    updateChangeTheHeader(false);
-    router.push("/signin");
-  };
   const [per, setPer] = useState(data?.studentGrade); // in future update the state to do whatif
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState(null);
+  const [openUser, setOpenUser] = useState(false);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   function updateModalStatus(status, id) {
     document.querySelector("html").classList.toggle("overflow-hidden");
 
@@ -85,7 +82,11 @@ function Page({ params }) {
     setShowModal(status);
   }
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ ease: "easeInOut", duration: 0.75 }}
+    >
       {showModal ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none m-2 text-slate-200">
@@ -176,7 +177,8 @@ function Page({ params }) {
           </div>
         </>
       ) : null}
-      <section className="relative z-10 overflow-hidden pt-28 lg:pt-[150px]">
+
+      <section className="relative z-10 overflow-hidden pt-7">
         <div className="container">
           <div className="-mx-4 flex flex-wrap items-center">
             <div className="w-full px-4 md:w-8/12 lg:w-7/12">
@@ -187,7 +189,7 @@ function Page({ params }) {
 
                 <button
                   className="bg-primary px-4 py-2 text-white hover:bg-primary/90"
-                  onClick={() => router.push("/dashboard")}
+                  onClick={() => params.update("home")}
                 >
                   Go Back To Dashboard
                 </button>
@@ -217,21 +219,9 @@ function Page({ params }) {
                   <li className="text-base font-medium text-primary">
                     {params.id}
                   </li>
-                  <button
-                    className="ml-4 bg-primary px-4 py-2 text-white hover:bg-primary/90 hidden sm:block"
-                    onClick={handleClick}
-                  >
-                    Logout
-                  </button>
                 </ul>
               </div>
             </div>
-            <button
-              className="ml-4 bg-primary px-4 py-2 text-white hover:bg-primary/90 mt-5 sm:hidden"
-              onClick={handleClick}
-            >
-              Logout
-            </button>
           </div>
         </div>
 
@@ -335,7 +325,7 @@ function Page({ params }) {
                 </span>
               </div>
               <div className="flex gap-2 items-center justify-center mt-5">
-                <div className="inline-block w-8 h-8 border-pink-600/60 border-4"></div>
+                <div className="inline-block w-8 h-8 border-cyan-600/60 border-4"></div>
                 <span className="text-md dark:text-slate-300 text-slate-600">
                   {" "}
                   - Progress Check for Learning
@@ -364,8 +354,8 @@ function Page({ params }) {
             : "There are no assignments to show at this time."}
         </div>
       </section>
-    </>
+    </motion.div>
   );
 }
 
-export default Page;
+export default Com;

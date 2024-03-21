@@ -11,6 +11,8 @@ import "../styles/index.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }) {
+  const pathname = usePathname();
+
   return (
     <html suppressHydrationWarning lang="en">
       {/*
@@ -22,9 +24,9 @@ export default function RootLayout({ children }) {
       <body className={`bg-[#FCFCFC] dark:bg-black ${inter.className}`}>
         <Providers>
           <Suspense fallback={<Loader />}>
-            <Header />
+            {!pathname.includes("/dashboard") ? <Header /> : null}
             {children}
-            <Footer />
+            {!pathname.includes("/dashboard") ? <Footer /> : null}
             <ScrollToTop />
           </Suspense>
         </Providers>
@@ -36,3 +38,4 @@ export default function RootLayout({ children }) {
 import { Providers } from "./providers";
 import { Suspense } from "react";
 import Loader from "@/components/ui/Loader";
+import { usePathname } from "next/navigation";

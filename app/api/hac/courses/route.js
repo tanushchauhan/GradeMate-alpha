@@ -2320,7 +2320,16 @@ export async function POST(req, res) {
             assignmentData = [...oTable.rows].map((t) =>
               [...t.children].map((u) => u.innerText)
             );
-            noWeight = false;
+            noWeight = true;
+
+            for (let op = 1; op < assignmentData.length; op++) {
+              if (
+                assignmentData[op][3] === "Assessment of Learning" &&
+                assignmentData[op][4] !== ""
+              ) {
+                noWeight = false;
+              }
+            }
           } catch {
             studentGrade = 0.0;
             assignmentData = {};
@@ -2403,7 +2412,16 @@ export async function POST(req, res) {
               assignmentData = [...oTable.rows].map((t) =>
                 [...t.children].map((u) => u.innerText)
               );
-              noWeight = false;
+              noWeight = true;
+
+              for (let op = 1; op < assignmentData.length; op++) {
+                if (
+                  assignmentData[op][3] === "Assessment of Learning" &&
+                  assignmentData[op][4] !== ""
+                ) {
+                  noWeight = false;
+                }
+              }
             } catch {
               studentGrade = 0;
               assignmentData = {};
@@ -2522,7 +2540,16 @@ export async function POST(req, res) {
             assignmentData = [...oTable.rows].map((t) =>
               [...t.children].map((u) => u.innerText)
             );
-            noWeight = false;
+            noWeight = true;
+
+            for (let op = 1; op < assignmentData.length; op++) {
+              if (
+                assignmentData[op][3] === "Assessment of Learning" &&
+                assignmentData[op][4] !== ""
+              ) {
+                noWeight = false;
+              }
+            }
           } catch {
             studentGrade = 0.0;
             assignmentData = {};

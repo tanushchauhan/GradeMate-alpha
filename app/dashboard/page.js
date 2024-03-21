@@ -4,12 +4,10 @@ export const metadata = {
   // other metadata
 };
 
-import dynamic from "next/dynamic";
-// import Maincomponent from "./Maincomponent";
-const NoSSR = dynamic(() => import("./Maincomponent"), { ssr: false });
+import Dashboard from "./Dashboard";
 
-function Dashboard() {
-  return <NoSSR />;
+function page() {
+  return <Dashboard />;
 }
 
-export default Dashboard;
+export default page;

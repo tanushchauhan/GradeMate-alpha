@@ -72,6 +72,7 @@ const Header = () => {
                   width={140}
                   height={30}
                   className="w-full dark:hidden"
+                  priority={true}
                 />
                 <Image
                   src="/images/logo/logo.svg"
@@ -79,6 +80,7 @@ const Header = () => {
                   width={140}
                   height={30}
                   className="hidden w-full dark:block"
+                  priority={true}
                 />
               </Link>
             </div>

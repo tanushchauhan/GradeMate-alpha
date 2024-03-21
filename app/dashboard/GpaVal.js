@@ -30,6 +30,7 @@ function giveGPAs(periodObj) {
   let sum = 0;
   let numSum = 0;
   for (let i = 0; i < periodObj.data.length; i++) {
+    if (periodObj.data[i].noWeight) continue;
     let weight = 5.0;
     try {
       weight = periodObj.data[i].weightDetails.weight;
