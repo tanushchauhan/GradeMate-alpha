@@ -7,7 +7,7 @@ import Loader from "@/components/ui/Loader";
 import { deleteCookie, getCookie, hasCookie } from "cookies-next";
 import GpaVal from "./GpaVal";
 import { useQueryClient } from "@tanstack/react-query";
-import { globalContext } from "../providers";
+import { globalContext } from "../../providers";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 

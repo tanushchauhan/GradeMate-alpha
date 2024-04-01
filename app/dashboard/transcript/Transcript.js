@@ -85,7 +85,6 @@ function Transcript() {
       if (!sessionStorage.getItem("trans")) return;
       else {
         setMainData(JSON.parse(sessionStorage.getItem("trans")));
-        console.log(JSON.parse(sessionStorage.getItem("trans")));
       }
     }
   }, [isFetching]);
