@@ -36,8 +36,10 @@ function giveGPAs(periodObj) {
       weight = periodObj.data[i].weightDetails.weight;
     } catch {}
     const grade = Math.round(periodObj.data[i].studentGrade);
-    for (let o = 100; o !== grade; o--) {
-      weight -= 0.1;
+    if (grade <= 100) {
+      for (let o = 100; o !== grade; o--) {
+        weight -= 0.1;
+      }
     }
     weight = Number(weight.toFixed(3));
     sum += weight;

@@ -14,7 +14,7 @@ const Video = () => {
       <div className="container">
         <SectionTitle
           title="Not conviced yet?"
-          paragraph="Checkout this short introduction video to better understand the main features."
+          paragraph="Check out this short introduction video to better understand the main features."
           center
           mb="80px"
         />

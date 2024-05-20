@@ -19,7 +19,7 @@ export default function Home() {
       <ScrollUp />
       <Hero />
       <Features />
-      <Video />
+      {/* <Video /> */} {/* Disabling video for now */}
       <Testimonials />
       <Pricing />
       <Blog />

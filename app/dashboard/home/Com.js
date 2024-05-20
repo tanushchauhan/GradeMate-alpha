@@ -116,7 +116,7 @@ function AssignmentItem({
       )}
       {whatIF === false ? (
         <span
-          className={`xl:justify-self-end text-3xl xl:text-xl p-2 rounded-xl ${
+          className={`xl:justify-self-end text-3xl xl:text-xl p-2 rounded-xl text-white ${
             Number(data[4])
               ? Number(data[4]) >= 90
                 ? "bg-green-700"
@@ -128,13 +128,14 @@ function AssignmentItem({
               : ""
           }`}
         >
-          {Number(data[4]) ? Number(data[4]) : data[4]} / {Number(data[5])}
+          {Number(data[4]) ? Number(data[4]) : data[4]} /{" "}
+          {!Number(data[5]) ? "100" : Number(data[5])}
         </span>
       ) : (
         <div className="xl:justify-self-end">
           <input
             id="noClick"
-            className={`text-3xl xl:text-xl p-2 rounded-xl transition-all duration-300 w-16 ${
+            className={`text-3xl xl:text-xl p-2 rounded-xl transition-all duration-300 w-16 text-white ${
               inputData
                 ? inputData >= 90
                   ? "bg-green-700"
@@ -148,7 +149,7 @@ function AssignmentItem({
             value={inputData}
             onChange={handleChange}
           ></input>
-          <span> / {Number(data[5])}</span>
+          <span> / {!Number(data[5]) ? "100" : Number(data[5])}</span>
         </div>
       )}
     </div>

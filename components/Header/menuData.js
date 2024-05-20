@@ -19,7 +19,7 @@ const menuData = [
   },
   {
     id: 3,
-    title: "Support",
+    title: "Contact",
     path: "/contact",
     newTab: false,
   },

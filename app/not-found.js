@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Error Page | GradeMate",
-  description: "This is Error Page for GradeMate",
+  title: "404 | GradeMate",
+  description: "This is an error page for GradeMate",
   // other metadata
 };
 

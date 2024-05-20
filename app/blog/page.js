@@ -1,20 +1,16 @@
+import blogData from "@/blogData/blogData";
 import SingleBlog from "@/components/Blog/SingleBlog";
-import blogData from "@/components/Blog/blogData";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 
 export const metadata = {
-  title: "Blog Page | Free Next.js Template for Startup and SaaS",
-  description: "This is Blog Page for Startup Nextjs Template",
-  // other metadata
+  title: "Blog Page | GradeMate",
+  description: "This is Blog Page for GradeMate",
 };
 
 const Blog = () => {
   return (
     <>
-      <Breadcrumb
-        pageName="Blog Grid"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In varius eros eget sapien consectetur ultrices. Ut quis dapibus libero."
-      />
+      <Breadcrumb pageName="Blog Grid" />
 
       <section className="pb-[120px] pt-[120px]">
         <div className="container">
@@ -29,7 +25,7 @@ const Blog = () => {
             ))}
           </div>
 
-          <div
+          {/* <div
             className="wow fadeInUp -mx-4 flex flex-wrap"
             data-wow-delay=".15s"
           >
@@ -90,7 +86,7 @@ const Blog = () => {
                 </li>
               </ul>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
     </>

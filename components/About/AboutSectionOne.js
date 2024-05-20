@@ -20,54 +20,22 @@ const AboutSectionOne = () => {
   return (
     <section id="about" className="pt-16 md:pt-20 lg:pt-28">
       <div className="container">
-        <div className="border-b border-body-color/[.15] pb-16 dark:border-white/[.15] md:pb-20 lg:pb-28">
-          <div className="-mx-4 flex flex-wrap items-center">
-            <div className="w-full px-4 lg:w-1/2">
-              <SectionTitle
-                title="Crafted for Startup, SaaS and Business Sites."
-                paragraph="The main ‘thrust’ is to focus on educating attendees on how to best protect highly vulnerable business applications with interactive panel discussions and roundtables."
-                mb="44px"
-              />
-
-              <div
-                className="wow fadeInUp mb-12 max-w-[570px] lg:mb-0"
-                data-wow-delay=".15s"
-              >
-                <div className="mx-[-12px] flex flex-wrap">
-                  <div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
-                    <List text="Premium quality" />
-                    <List text="Tailwind CSS" />
-                    <List text="Use for lifetime" />
-                  </div>
-
-                  <div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
-                    <List text="Next.js" />
-                    <List text="Rich documentation" />
-                    <List text="Developer friendly" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="w-full px-4 lg:w-1/2">
-              <div
-                className="wow fadeInUp relative mx-auto aspect-[25/24] max-w-[500px] lg:mr-0"
-                data-wow-delay=".2s"
-              >
-                <Image
-                  src="/images/about/about-image.svg"
-                  alt="about-image"
-                  fill
-                  className="drop-shadow-three mx-auto max-w-full dark:hidden dark:drop-shadow-none lg:mr-0"
-                />
-                <Image
-                  src="/images/about/about-image-dark.svg"
-                  alt="about-image"
-                  fill
-                  className="drop-shadow-three mx-auto hidden max-w-full dark:block dark:drop-shadow-none lg:mr-0"
-                />
-              </div>
-            </div>
+        <div className=" flex items-center justify-center gap-4 gap-y-7 flex-col lg:flex-row">
+          <div className="max-w-[500px]">
+            <Image
+              src="/images/blog/tc.jpeg"
+              alt="about-image"
+              height="688"
+              width="688"
+              className="rounded-3xl"
+            />
+          </div>
+          <div className="px-4">
+            <SectionTitle
+              title="Hi I am Tanush!"
+              paragraph="I am the founder and the maker of GradeMate! I am a rising senior at Lebanon Trail High School. I came up with the idea of GradeMate when I got tired of looking at the old design of HAC, and from there, with the help of my many users who provided me with valuable feedback, I was able to make GradeMate something more than just a redesign of HAC. Using GradeMate, you can look at your grades, predict your GPA, see the effect of future assessments on your grades, and much more!"
+              mb="44px"
+            />
           </div>
         </div>
       </div>

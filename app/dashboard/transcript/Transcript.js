@@ -6,7 +6,7 @@ import { Fragment, useEffect, useState } from "react";
 function Table({ transPerGradeData, transPerGradeData2 }) {
   return (
     <div className=" w-full overflow-x-auto">
-      <div className="bg-slate-800 items-center justify-center my-10 p-4 py-10 flex flex-col gap-5 min-w-[1070px] flex-shrink-1">
+      <div className="dark:bg-slate-800 bg-slate-200 items-center justify-center my-10 p-4 py-10 flex flex-col gap-5 min-w-[1070px] flex-shrink-1">
         <div className="flex items-center justify-center text-center gap-4">
           <div className="flex items-center justify-center gap-2">
             <span className="underline underline-offset-4 font-bold">
@@ -43,7 +43,7 @@ function Table({ transPerGradeData, transPerGradeData2 }) {
 
 function TableRank({ data }) {
   return (
-    <div className="bg-slate-800 flex items-center justify-center">
+    <div className="dark:bg-slate-800 bg-slate-200 flex items-center justify-center">
       <div className="inline-block mx-auto">
         <div className="grid grid-cols-2 p-4 py-10 gap-3 mx-auto justify-items-center items-center text-xl text-center gap-y-5 md:grid-cols-3 md:gap-y-3">
           <span className="underline underline-offset-4 font-bold">

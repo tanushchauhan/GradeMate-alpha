@@ -1,3 +1,5 @@
+// argument need by puppeteer.launch() when on server - { executablePath: '/usr/bin/chromium-browser', args: [ '--disable-gpu', '--disable-setuid-sandbox', '--no-sandbox', '--no-zygote' ] }
+
 import puppeteer from "puppeteer";
 import NodeRSA from "node-rsa";
 import { demoData, demoTransData } from "./demoData";
@@ -2247,7 +2249,7 @@ export async function POST(req, res) {
   let storeData;
   let studentName;
   const url = "https://hac.friscoisd.org/homeaccess/";
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
   try {
     await page.setUserAgent(
